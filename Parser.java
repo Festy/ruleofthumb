@@ -24,16 +24,16 @@ public class Parser {
 	 * @return The parsed and fully loaded Document object
 	 * @throws ParserException In case any error occurs during parsing
 	 */
-	static String 	fName,
-					fileID,
-					category,
-					title,
-					author,
-					org,
+	static String 	fName="",
+					fileID="",
+					category="",
+					title="",
+					author="",
+					org="",
 					month="",
 					date="",
-					place,
-					content;
+					place="",
+					content="";
 	static int		titleEndIndex,dateStartIndex,titleLineIndex=0;
 	static File 	f;
 
@@ -145,7 +145,7 @@ public class Parser {
 
 
 	public static void setAuthorOrg(){
-		Pattern p =Pattern.compile("(<AUTHOR>)(.*)(</AUTHOR>)"); // TODO implement for <author>
+		Pattern p =Pattern.compile("(<AUTHOR>)(.*)(</AUTHOR>)",Pattern.CASE_INSENSITIVE); // TODO implement for <author>
 		try {
 			FileInputStream fi= new FileInputStream(f);
 			byte[] data = new byte[(int)(f).length()];
@@ -154,9 +154,10 @@ public class Parser {
 				String s = new String(data, "UTF-8");
 				Matcher m=p.matcher(s);
 				if(m.find()){
-					String s2[],s3[];
+					String s2[];
+					String s3[];
 					s2=m.group(2).split(",");
-					s3=s2[0].split("By");
+					s3=s2[0].toLowerCase().split("by");
 					author=s3[s3.length-1];
 					if(s2.length>=2)
 						org=s2[s2.length-1];
